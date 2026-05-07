@@ -7,6 +7,40 @@ export type PodPhase =
 	| "Failed"
 	| "Unknown";
 
+function buildPodFailureError(
+	podName: string,
+	podStatus?: {
+		initContainerStatuses?: Array<{
+			name: string;
+			state?: {
+				terminated?: { exitCode?: number; reason?: string; message?: string };
+			};
+		}>;
+		containerStatuses?: Array<{
+			state?: { terminated?: { exitCode?: number; reason?: string } };
+		}>;
+	},
+): Error {
+	const initStatuses = podStatus?.initContainerStatuses || [];
+	const containerStatuses = podStatus?.containerStatuses || [];
+
+	const failedInit = initStatuses.find(
+		(s) => s.state?.terminated && s.state.terminated.exitCode !== 0,
+	);
+	if (failedInit) {
+		const t = failedInit.state?.terminated;
+		const reason = t?.reason || "Unknown reason";
+		const msg = t?.message ? `: ${t.message}` : "";
+		return new Error(
+			`Pod ${podName} init container "${failedInit.name}" failed: ${reason} (exit ${t?.exitCode})${msg}`,
+		);
+	}
+
+	const terminatedState = containerStatuses[0]?.state?.terminated;
+	const reason = terminatedState?.reason || "Unknown reason";
+	return new Error(`Pod ${podName} failed: ${reason}`);
+}
+
 /**
  * Waits for a pod to reach a target phase.
  * Polls the pod status at regular intervals until the target phase is reached or timeout.
@@ -40,10 +74,7 @@ export function waitForPodPhase(
 				}
 
 				if (phase === "Failed") {
-					const containerStatuses = pod.status?.containerStatuses || [];
-					const terminatedState = containerStatuses[0]?.state?.terminated;
-					const reason = terminatedState?.reason || "Unknown reason";
-					return Promise.reject(new Error(`Pod ${podName} failed: ${reason}`));
+					return Promise.reject(buildPodFailureError(podName, pod.status));
 				}
 
 				return new Promise<PodPhase>((resolve) => {
@@ -56,21 +87,23 @@ export function waitForPodPhase(
 }
 
 /**
- * Waits for a pod to complete (Succeeded or Failed).
- * Used for ephemeral pods that run to completion.
+ * Waits for a pod to complete. Only targets "Succeeded" so that
+ * "Failed" hits the early-exit handler in waitForPodPhase.
  */
 export function waitForPodCompletion(
 	clients: K8sClients,
 	podName: string,
 	namespace: string,
 	timeoutMs: number,
+	pollIntervalMs = 2000,
 ): Promise<PodPhase> {
 	return waitForPodPhase(
 		clients,
 		podName,
 		namespace,
-		["Succeeded", "Failed"],
+		["Succeeded"],
 		timeoutMs,
+		pollIntervalMs,
 	);
 }
 
@@ -122,6 +155,7 @@ export function waitForPodReady(
 	podName: string,
 	namespace: string,
 	timeoutMs: number,
+	pollIntervalMs = 2000,
 ): Promise<PodPhase> {
 	const startTime = Date.now();
 
@@ -138,9 +172,7 @@ export function waitForPodReady(
 				const phase = (pod.status?.phase || "Unknown") as PodPhase;
 
 				if (phase === "Failed") {
-					return Promise.reject(
-						new Error(`Pod ${podName} failed before becoming ready`),
-					);
+					return Promise.reject(buildPodFailureError(podName, pod.status));
 				}
 
 				if (phase === "Running") {
@@ -153,7 +185,7 @@ export function waitForPodReady(
 				}
 
 				return new Promise<PodPhase>((resolve) => {
-					setTimeout(() => resolve(poll()), 2000);
+					setTimeout(() => resolve(poll()), pollIntervalMs);
 				});
 			});
 	}
