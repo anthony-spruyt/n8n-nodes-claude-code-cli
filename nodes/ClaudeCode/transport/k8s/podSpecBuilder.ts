@@ -26,6 +26,7 @@ interface V1PodSpec {
 		name: string;
 		namespace: string;
 		labels: Record<string, string>;
+		annotations?: Record<string, string>;
 	};
 	spec: {
 		restartPolicy: string;
@@ -183,6 +184,9 @@ export function buildEphemeralPodSpec(
 			labels: {
 				app: "claude-code-ephemeral",
 				"managed-by": "n8n-claude-code",
+			},
+			annotations: {
+				"agent-timeout": String(options.timeout ?? 300),
 			},
 		},
 		spec: {

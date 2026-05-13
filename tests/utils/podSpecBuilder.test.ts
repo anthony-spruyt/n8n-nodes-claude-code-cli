@@ -82,6 +82,58 @@ describe("podSpecBuilder", () => {
 			expect(container.env).toContainEqual({ name: "B", value: "2" });
 		});
 
+		it("should set agent-timeout annotation from explicit timeout", () => {
+			const options: ClaudeCodeExecutionOptions = {
+				prompt: "Test",
+				outputFormat: "json",
+				timeout: 1800,
+			};
+
+			const result = buildEphemeralPodSpec(
+				defaultK8sCredentials,
+				options,
+				"test-pod",
+			);
+
+			expect(result.metadata.annotations).toBeDefined();
+			expect(result.metadata.annotations?.["agent-timeout"]).toBe("1800");
+		});
+
+		it("should set agent-timeout annotation as string even when timeout is numeric", () => {
+			const options: ClaudeCodeExecutionOptions = {
+				prompt: "Test",
+				outputFormat: "json",
+				timeout: 600,
+			};
+
+			const result = buildEphemeralPodSpec(
+				defaultK8sCredentials,
+				options,
+				"test-pod",
+			);
+
+			expect(typeof result.metadata.annotations?.["agent-timeout"]).toBe(
+				"string",
+			);
+			expect(result.metadata.annotations?.["agent-timeout"]).toBe("600");
+		});
+
+		it("should default agent-timeout annotation to 300 when timeout not specified", () => {
+			const options: ClaudeCodeExecutionOptions = {
+				prompt: "Test",
+				outputFormat: "json",
+			};
+
+			const result = buildEphemeralPodSpec(
+				defaultK8sCredentials,
+				options,
+				"test-pod",
+			);
+
+			expect(result.metadata.annotations).toBeDefined();
+			expect(result.metadata.annotations?.["agent-timeout"]).toBe("300");
+		});
+
 		it("should set CLAUDE_CODE_MAX_OUTPUT_TOKENS env var when maxOutputTokens > 0", () => {
 			const options: ClaudeCodeExecutionOptions = {
 				prompt: "Test",

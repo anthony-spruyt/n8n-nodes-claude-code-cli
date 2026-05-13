@@ -15,6 +15,8 @@ import {
 	emptyAgentsParams,
 	newFlagsParams,
 	partialNewFlagsParams,
+	explicitTimeoutParams,
+	excessiveTimeoutParams,
 	worktreeWithNameParams,
 	worktreeAutoNameParams,
 	worktreeDisabledParams,
@@ -287,6 +289,38 @@ describe("optionsBuilder", () => {
 			const result = buildExecutionOptions(context, 0, "executePrompt");
 
 			expect(result.timeout).toBe(300);
+		});
+
+		it("should accept explicit timeout within range", () => {
+			const context = createTestContext(
+				explicitTimeoutParams,
+			) as IExecuteFunctions;
+
+			const result = buildExecutionOptions(context, 0, "executePrompt");
+
+			expect(result.timeout).toBe(1800);
+		});
+
+		it("should clamp timeout exceeding maximum to 10800", () => {
+			const context = createTestContext(
+				excessiveTimeoutParams,
+			) as IExecuteFunctions;
+
+			const result = buildExecutionOptions(context, 0, "executePrompt");
+
+			expect(result.timeout).toBe(10800);
+		});
+
+		it("should clamp negative timeout to minimum of 1", () => {
+			const params = {
+				...defaultExecutePromptParams,
+				options: { timeout: -5 },
+			};
+			const context = createTestContext(params) as IExecuteFunctions;
+
+			const result = buildExecutionOptions(context, 0, "executePrompt");
+
+			expect(result.timeout).toBe(1);
 		});
 
 		it("should handle empty context files gracefully", () => {
