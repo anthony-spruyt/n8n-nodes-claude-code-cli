@@ -68,7 +68,7 @@ export const optionsDescription: INodeProperties[] = [
 				name: "timeout",
 				type: "number",
 				default: 300,
-				description: "Execution timeout in seconds. Maximum: 3600 (1 hour).",
+				description: "Execution timeout in seconds. Maximum: 10800 (3 hours).",
 			},
 			{
 				displayName: "System Prompt Mode",
