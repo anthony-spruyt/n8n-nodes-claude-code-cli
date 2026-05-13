@@ -186,7 +186,7 @@ export function buildEphemeralPodSpec(
 				"managed-by": "n8n-claude-code",
 			},
 			annotations: {
-				"agent-timeout": String(options.timeout),
+				"agent-timeout": String(options.timeout ?? 300),
 			},
 		},
 		spec: {

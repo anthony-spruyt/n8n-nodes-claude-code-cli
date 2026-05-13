@@ -323,7 +323,7 @@ export function buildExecutionOptions(
 		session,
 		contextFiles,
 		additionalArgs: additionalArgs.length > 0 ? additionalArgs : undefined,
-		timeout: (options.timeout as number) || 300,
+		timeout: Math.max(1, Math.min((options.timeout as number) || 300, 10800)),
 		systemPrompt: (options.systemPrompt as string) || undefined,
 		systemPromptFile: (options.systemPromptFile as string) || undefined,
 		systemPromptMode:

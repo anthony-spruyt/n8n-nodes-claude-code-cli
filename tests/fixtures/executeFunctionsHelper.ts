@@ -293,6 +293,30 @@ export const maxOutputTokensParams: Record<string, unknown> = {
 };
 
 /**
+ * Parameters with explicit timeout
+ */
+export const explicitTimeoutParams: Record<string, unknown> = {
+	prompt: "Test with timeout",
+	model: "",
+	toolPermissions: {},
+	options: {
+		timeout: 1800,
+	},
+};
+
+/**
+ * Parameters with timeout exceeding maximum
+ */
+export const excessiveTimeoutParams: Record<string, unknown> = {
+	prompt: "Test with excessive timeout",
+	model: "",
+	toolPermissions: {},
+	options: {
+		timeout: 99999,
+	},
+};
+
+/**
  * Parameters with partial new CLI flags
  */
 export const partialNewFlagsParams: Record<string, unknown> = {

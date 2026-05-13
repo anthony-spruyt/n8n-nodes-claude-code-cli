@@ -68,6 +68,10 @@ export const optionsDescription: INodeProperties[] = [
 				name: "timeout",
 				type: "number",
 				default: 300,
+				typeOptions: {
+					minValue: 1,
+					maxValue: 10800,
+				},
 				description: "Execution timeout in seconds. Maximum: 10800 (3 hours).",
 			},
 			{
