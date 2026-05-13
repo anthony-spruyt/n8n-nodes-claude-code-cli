@@ -1,6 +1,6 @@
 {
-	"name": "n8n-nodes-claude-code-cli",
-	"version": "1.9.0",
+	"name": "n8n-nodes-claude-code-cli-aspruyt",
+	"version": "1.9.1-fork.1",
 	"description": "n8n community node for Claude Code CLI integration - execute AI-assisted coding tasks",
 	"keywords": [
 		"n8n-community-node-package",
@@ -15,10 +15,10 @@
 		"k8s"
 	],
 	"license": "MIT",
-	"homepage": "https://github.com/ThomasTartrau/n8n-nodes-claude-code-cli",
+	"homepage": "https://github.com/anthony-spruyt/n8n-nodes-claude-code-cli",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/ThomasTartrau/n8n-nodes-claude-code-cli.git"
+		"url": "git+https://github.com/anthony-spruyt/n8n-nodes-claude-code-cli.git"
 	},
 	"main": "dist/index.js",
 	"scripts": {
