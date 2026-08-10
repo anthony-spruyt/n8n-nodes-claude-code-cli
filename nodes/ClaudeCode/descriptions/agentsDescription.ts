@@ -63,6 +63,7 @@ export const agentsDescription: INodeProperties[] = [
 							{ name: "Sonnet", value: "sonnet" },
 							{ name: "Opus", value: "opus" },
 							{ name: "Haiku", value: "haiku" },
+							{ name: "Fable", value: "fable" },
 						],
 						default: "inherit",
 						description: "Model to use for this agent.",

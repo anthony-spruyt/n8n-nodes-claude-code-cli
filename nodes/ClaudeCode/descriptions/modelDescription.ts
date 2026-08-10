@@ -11,11 +11,18 @@ export const modelDescription: INodeProperties[] = [
 			{ name: "Opus (Latest)", value: "opus" },
 			{ name: "Sonnet (Latest)", value: "sonnet" },
 			{ name: "Haiku (Latest)", value: "haiku" },
+			// Claude 5 Series
+			{ name: "Claude Fable 5", value: "claude-fable-5" },
+			{ name: "Claude Opus 5", value: "claude-opus-5" },
+			{ name: "Claude Sonnet 5", value: "claude-sonnet-5" },
+			// Claude 4.8 Series
+			{ name: "Claude Opus 4.8", value: "claude-opus-4-8" },
+			// Claude 4.7 Series
+			{ name: "Claude Opus 4.7", value: "claude-opus-4-7" },
 			// Claude 4.6 Series
 			{ name: "Claude Opus 4.6", value: "claude-opus-4-6" },
 			{ name: "Claude Sonnet 4.6", value: "claude-sonnet-4-6" },
 			// Claude 4.5 Series
-			{ name: "Claude Opus 4.5", value: "claude-opus-4-5-20251101" },
 			{ name: "Claude Sonnet 4.5", value: "claude-sonnet-4-5-20250929" },
 			{ name: "Claude Haiku 4.5", value: "claude-haiku-4-5-20251001" },
 			// Claude 4.x Series
@@ -45,7 +52,7 @@ export const modelDescription: INodeProperties[] = [
 				model: ["custom"],
 			},
 		},
-		placeholder: "claude-opus-4-5-20251101",
+		placeholder: "claude-opus-5",
 		description:
 			"Custom model ID to use. Useful for new models or specific versions.",
 	},
