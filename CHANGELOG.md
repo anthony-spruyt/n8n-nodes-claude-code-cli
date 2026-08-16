@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/ThomasTartrau/n8n-nodes-claude-code-cli/compare/v1.9.0...v1.10.0) (2026-08-10)
+
+
+### Features
+
+* add Claude 5 series and newer model options ([767e671](https://github.com/ThomasTartrau/n8n-nodes-claude-code-cli/commit/767e67132e03e6ee831aa21275cfe18071172439))
+
 # [1.9.0](https://github.com/ThomasTartrau/n8n-nodes-claude-code-cli/compare/v1.8.0...v1.9.0) (2026-04-21)
 
 
