@@ -167,7 +167,7 @@ export const optionsDescription: INodeProperties[] = [
 				type: "boolean",
 				default: true,
 				description:
-					"Enable 1M token context window for analyzing very large codebases in a single pass. Only supported by Claude Opus 4.6, Sonnet 4.6, Sonnet 4.5, and Sonnet 4. Has no effect on other models.",
+					"Enable 1M token context window for analyzing very large codebases in a single pass. Only supported by Claude Opus 5, Sonnet 5, Opus 4.8, Opus 4.7, Opus 4.6, Sonnet 4.6, Sonnet 4.5, and Sonnet 4. Has no effect on other models.",
 			},
 			{
 				displayName: "Worktree Isolation",
