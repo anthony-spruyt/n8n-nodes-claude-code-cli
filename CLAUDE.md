@@ -80,8 +80,11 @@ upstream — npm identity, publishing tooling, env — lives on the release bran
 To release: merge `main` into `npm-publish-v3`, bump `version` in
 `package.json`, push, then run `./publish-fork.sh`.
 
-**There is no node/npm on the dev host** — every npm command runs in Docker.
-`publish-fork.sh` handles this: it builds from a throwaway worktree of
+**Every npm command runs in Docker**, pinned to `node:24` to match CI. The
+host's own node/npm (v18 / npm 9) is older, so release builds deliberately
+do not use it.
+
+`publish-fork.sh` wraps all of it: it builds from a throwaway worktree of
 `origin/npm-publish-v3` (so it publishes what is pushed, not your working
 tree), runs install/build/lint/test, packs, and publishes the tarball. It
 aborts if the version is already on the registry or if the package still

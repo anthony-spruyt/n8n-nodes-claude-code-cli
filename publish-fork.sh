@@ -7,7 +7,8 @@
 # content-identical to main; sync main into it and bump the version there before
 # running this.
 #
-# This host has no node/npm, so every npm step runs inside Docker.
+# Every npm step runs inside Docker on a pinned node image, matching CI, so the
+# release build does not depend on whatever node/npm the host happens to have.
 #
 # Usage:
 #   ./publish-fork.sh              # build, verify, then prompt before publishing
@@ -35,7 +36,7 @@ done
 step() { printf '\n\033[1;36m==> %s\033[0m\n' "$1"; }
 die()  { printf '\033[1;31merror:\033[0m %s\n' "$1" >&2; exit 1; }
 
-command -v docker >/dev/null || die "docker is required (no node/npm on this host)"
+command -v docker >/dev/null || die "docker is required (npm runs in a pinned $NODE_IMAGE container)"
 command -v git    >/dev/null || die "git is required"
 
 # Docker Desktop's Windows credential helper fails from WSL; use a clean config
